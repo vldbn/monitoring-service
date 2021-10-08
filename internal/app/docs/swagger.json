@@ -1,0 +1,318 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "description": "Login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "Username and Password",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.AuthLoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.AuthLoginRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.DefaultRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/cryptocurrencies": {
+            "get": {
+                "description": "Returns list of cryptocurrencies",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cryptocurrencies"
+                ],
+                "summary": "List of Cryptocurrencies in monitoring",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "limit of currencies in response",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "number of currencies to offset",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.CryptocurrencyRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.DefaultRes"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.DefaultRes"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Adds Cryptocurrency for monitoring",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cryptocurrencies"
+                ],
+                "summary": "Add Cryptocurrency for monitoring",
+                "parameters": [
+                    {
+                        "description": "Add Cryptocurrency",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CreateCryptocurrencyReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/response.CryptocurrencyRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.DefaultRes"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.DefaultRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/cryptocurrencies/{id}": {
+            "get": {
+                "description": "Gets Cryptocurrency from monitoring by Currency ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cryptocurrencies"
+                ],
+                "summary": "Get Cryptocurrency from monitoring",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Currency ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.CryptocurrencyRes"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.DefaultRes"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.DefaultRes"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes Cryptocurrency from monitoring",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cryptocurrencies"
+                ],
+                "summary": "Delete Cryptocurrency from monitoring",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Currency ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "$ref": "#/definitions/response.CryptocurrencyRes"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.DefaultRes"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.DefaultRes"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "entity.Cryptocurrency": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "currencySymbol": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "rateUsd": {
+                    "type": "string"
+                },
+                "refresh_interval": {
+                    "type": "integer"
+                },
+                "symbol": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "update_at": {
+                    "type": "string"
+                },
+                "updated": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.Tokens": {
+            "type": "object",
+            "properties": {
+                "access": {
+                    "type": "string"
+                },
+                "refresh": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.AuthLoginReq": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.CreateCryptocurrencyReq": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "refresh_interval": {
+                    "type": "integer"
+                }
+            }
+        },
+        "response.AuthLoginRes": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "tokens": {
+                    "$ref": "#/definitions/entity.Tokens"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.CryptocurrencyRes": {
+            "type": "object",
+            "properties": {
+                "cryptocurrency": {
+                    "$ref": "#/definitions/entity.Cryptocurrency"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.DefaultRes": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,206 @@
+definitions:
+  entity.Cryptocurrency:
+    properties:
+      _id:
+        type: string
+      currencySymbol:
+        type: string
+      id:
+        type: string
+      rateUsd:
+        type: string
+      refresh_interval:
+        type: integer
+      symbol:
+        type: string
+      type:
+        type: string
+      update_at:
+        type: string
+      updated:
+        type: string
+    type: object
+  entity.Tokens:
+    properties:
+      access:
+        type: string
+      refresh:
+        type: string
+    type: object
+  request.AuthLoginReq:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  request.CreateCryptocurrencyReq:
+    properties:
+      id:
+        type: string
+      refresh_interval:
+        type: integer
+    type: object
+  response.AuthLoginRes:
+    properties:
+      message:
+        type: string
+      tokens:
+        $ref: '#/definitions/entity.Tokens'
+      username:
+        type: string
+    type: object
+  response.CryptocurrencyRes:
+    properties:
+      cryptocurrency:
+        $ref: '#/definitions/entity.Cryptocurrency'
+      message:
+        type: string
+    type: object
+  response.DefaultRes:
+    properties:
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: Username and Password
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/request.AuthLoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.AuthLoginRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.DefaultRes'
+      summary: Login
+      tags:
+      - auth
+  /cryptocurrencies:
+    get:
+      description: Returns list of cryptocurrencies
+      parameters:
+      - description: limit of currencies in response
+        in: query
+        name: limit
+        type: integer
+      - description: number of currencies to offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CryptocurrencyRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.DefaultRes'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.DefaultRes'
+      summary: List of Cryptocurrencies in monitoring
+      tags:
+      - cryptocurrencies
+    post:
+      consumes:
+      - application/json
+      description: Adds Cryptocurrency for monitoring
+      parameters:
+      - description: Add Cryptocurrency
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreateCryptocurrencyReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.CryptocurrencyRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.DefaultRes'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.DefaultRes'
+      summary: Add Cryptocurrency for monitoring
+      tags:
+      - cryptocurrencies
+  /cryptocurrencies/{id}:
+    delete:
+      description: Deletes Cryptocurrency from monitoring
+      parameters:
+      - description: Currency ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/response.CryptocurrencyRes'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.DefaultRes'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.DefaultRes'
+      summary: Delete Cryptocurrency from monitoring
+      tags:
+      - cryptocurrencies
+    get:
+      description: Gets Cryptocurrency from monitoring by Currency ID
+      parameters:
+      - description: Currency ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CryptocurrencyRes'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.DefaultRes'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.DefaultRes'
+      summary: Get Cryptocurrency from monitoring
+      tags:
+      - cryptocurrencies
+swagger: "2.0"

@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  database:
+    image: mongo
+    container_name: monitoring_database
+    ports:
+      - "27017:27017"
+    volumes:
+      - monitoring_database_volume:/data/db
+    networks: 
+      - monitoring-network
+    restart: always
+  monitoring:
+    build: .
+    container_name: monitoring_service
+    environment: 
+      - PORT=8000
+      - SECRET_KEY=superSecretKey12345%
+      - DATABASE_URL=mongodb://database:27017
+      - USERNAME=username
+      - PASSWORD=password
+    ports:
+      - "8000:8000"
+    networks: 
+      - monitoring-network
+    restart: always
+    
+volumes:
+  monitoring_database_volume:
+
+
+networks:
+  monitoring-network:
+    driver: bridge
